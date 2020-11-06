@@ -18,21 +18,16 @@ def homepage():
 @app.route("/froyo")
 def choose_froyo():
     """Shows a form to collect the user's Fro-Yo order."""
-    return """
-    <form action="/froyo_results" method="GET">
-        What is your favorite Fro-Yo flavor? <br/>
-        <input type="text" name="flavor"><br/>
-        What toppings would you like on your froyo? <br/>
-        <input type="text" name="toppings"><br/>
-        <input type="submit" value="Submit!">
-    </form>
-    """
+    return render_template("froyo_form.html")
 
 @app.route("/froyo_results")
 def show_froyo_results():
-    users_froyo_flavor = request.args.get("flavor")
-    users_froyo_toppings = request.args.get("toppings")
-    return f"You ordered {users_froyo_flavor} flavored Fro-Yo with {users_froyo_toppings}!"
+    ...
+    context = {
+        "users_froyo_flavor": request.args.get("flavor"),
+        "users_froyo_toppings": request.args.get("toppings")
+    }
+    return render_template("froyo_results.html", **context)
 
 @app.route('/favorites')
 def favorites():
@@ -78,24 +73,10 @@ def message_results():
 @app.route('/calculator')
 def calculator():
     """Shows the user a form to enter 2 numbers and an operation."""
-    return """
-    <form action="/calculator_results" method="GET">
-        Please enter 2 numbers and select an operator.<br/><br/>
-        <input type="number" name="operand1">
-        <select name="operation">
-            <option value="add">+</option>
-            <option value="subtract">-</option>
-            <option value="multiply">*</option>
-            <option value="divide">/</option>
-        </select>
-        <input type="number" name="operand2">
-        <input type="submit" value="Submit!">
-    </form>
-    """
+    return render_template("calculator_form.html")
 
 @app.route('/calculator_results')
 def calculator_results():
-    """Shows the user the result of their calculation."""
     users_num1 = request.args.get("operand1")
     users_num2 = request.args.get("operand2")
     users_operator = request.args.get("operation")
@@ -107,7 +88,12 @@ def calculator_results():
         calc_result = int(users_num1) * int(users_num2)
     elif users_operator == "divide":
         calc_result = int(users_num1) / int(users_num2)
-    return f"You chose to {users_operator} {users_num1} with {users_num2}. Your result is {calc_result}"
+
+    return render_template("calculator_results.html", 
+        users_num1 = users_num1,
+        users_num2 = users_num2,
+        users_operator = users_operator,
+        calc_result = calc_result)
 
 
 # List of compliments to be used in the `compliments_results` route (feel free 
