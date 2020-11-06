@@ -96,7 +96,18 @@ def calculator():
 @app.route('/calculator_results')
 def calculator_results():
     """Shows the user the result of their calculation."""
-    pass
+    users_num1 = request.args.get("operand1")
+    users_num2 = request.args.get("operand2")
+    users_operator = request.args.get("operation")
+    if users_operator == "add":
+        calc_result = int(users_num1) + int(users_num2)
+    elif users_operator == "subtract":
+        calc_result = int(users_num1) - int(users_num2)
+    elif users_operator == "multiply":
+        calc_result = int(users_num1) * int(users_num2)
+    elif users_operator == "divide":
+        calc_result = int(users_num1) / int(users_num2)
+    return f"You chose to {users_operator} {users_num1} with {users_num2}. Your result is {calc_result}"
 
 
 # List of compliments to be used in the `compliments_results` route (feel free 
