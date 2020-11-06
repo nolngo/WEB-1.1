@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import random
 
 app = Flask(__name__)
+app.debug = True
 
 def sort_letters(message):
     """A helper method to sort the characters of a string in alphabetical order
@@ -60,12 +61,19 @@ def favorites_results():
 def secret_message():
     """Shows the user a form to collect a secret message. Sends the result via
     the POST method to keep it a secret!"""
-    pass
+    return """
+    <form action = "/message_results" method="POST">
+        What's your deepest secret?</br>
+        <input type = "text" name = message></br>
+        <input type = "submit" value = "Submit!">
+    </form>
+    """
 
-@app.route('/message_results', methods=['POST'])
+@app.route("/message_results", methods=["POST"])
 def message_results():
     """Shows the user their message, with the letters in sorted order."""
-    pass
+    users_secret_message = request.form.get("message")
+    return f"Here is your encrypted message: {''.join(sorted(users_secret_message))}"
 
 @app.route('/calculator')
 def calculator():
